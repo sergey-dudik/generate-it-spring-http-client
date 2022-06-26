@@ -5,7 +5,7 @@
 {% macro pascalCase(text) -%}
 {{ ucFirst(_.camelCase(_.deburr(text)).replace(' ','')) }}
 {%- endmacro -%}
-package com.acrontum.template.dtos;
+package dtos;
 
 import lombok.Data;
 
