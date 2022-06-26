@@ -1,0 +1,41 @@
+{%-set definitions = getContext().config.data.swagger.components.schemas or {} -%}
+{%-set definition = definitions[definitionName] or {} -%}
+{%-set properties = definition.properties or {} -%}
+{%-set notFoundClasses = {} -%}
+{% macro pascalCase(text) -%}
+{{ ucFirst(_.camelCase(_.deburr(text)).replace(' ','')) }}
+{%- endmacro -%}
+package com.acrontum.template.dtos;
+
+import lombok.Data;
+
+/**
+ * The type {{ definitionName }} dto.
+ */
+@Data
+public class {{ definitionName }}Dto {
+    {% for name, schema in properties %}
+    {%-set pascalCaseName = pascalCase(name) %}
+    {% if schema.type === 'object' -%}
+    private {{ pascalCaseName }}Dto {{ name }};
+    {# We know that is an object, but it's not defined in the schemas  #}
+    {# So we'll need to create an DTO for it  #}
+    {%- if not definitions[pascalCaseName] -%}
+    {%-set notFoundClasses = _.set(notFoundClasses, pascalCaseName, schema.properties) -%}
+    {%- endif -%}
+    {%- else -%}
+    private {{ schemaToJavaType(schema) }} {{ name }};
+    {%- endif -%}
+    {%- endfor %}
+    {#These are classes defined in as inner objects #}
+    {% for name, properties in notFoundClasses %}
+    @Data
+    static class {{ pascalCase(name) }}Dto {
+        {% for name, schema in properties %}
+        {% if schema.type !== 'object' -%}
+        private {{ schemaToJavaType(schema) }} {{ name }};
+        {%- endif -%}
+        {%- endfor %}
+    }
+    {% endfor %}
+}
