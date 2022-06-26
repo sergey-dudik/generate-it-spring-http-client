@@ -1,5 +1,14 @@
 {
-  "nodegenDir": "nodegen",
-  "nodegenMockDir": "nodegen/__mocks__",
-  "nodegenType": "client"
+  "nodegenDir": "src/http",
+  "nodegenMockDir": "src/domains/__mocks__",
+  "nodegenType": "client",
+  "ignoreFiles": [
+      "/\\.idea/",
+      "/\\.gradle/",
+      "/\\.vscode/",
+      "/build/",
+      "\\.png"
+    ],
+    "renderOnlyExt": ".njk",
+    "dontPrettify": true
 }
