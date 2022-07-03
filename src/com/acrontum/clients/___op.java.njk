@@ -72,6 +72,7 @@ package com.acrontum.dtos;
         {% if javaReturn !== 'void' -%}
         return this.{{ camel_case_operation }}Mapper.to{{ javaReturn }}Dto({{ camel_case_operation }}Model);
         {%- endif %}
+        return this.restTemplate.{{ ucFirst(method) }}ForObject({{ springPath }}, {{ 'com.acrontum.template.dtos.' if javaReturn !== 'void' }}{{ javaReturn }}{{ 'Dto' if javaReturn !== 'void' }});
     }
 {%- endmacro -%}
 
@@ -81,6 +82,8 @@ package com.acrontum.dtos;
 @Component
 @RequiredArgsConstructor
 public class {{ pascal_case_operation }}Client extends AcrontumHttpClient {
+
+    private final RestTemplate restTemplate;
 
 {%- for op in operations -%}
     {%- for method, path in op.path -%}
