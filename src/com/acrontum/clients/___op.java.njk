@@ -2,6 +2,7 @@
 {%-set pascal_case_operation = ucFirst(camel_case_operation)-%}
 package com.acrontum.clients;
 package com.acrontum.dtos;
+import lombok.val;
 
 {#
     Formats the text into camel case.
@@ -66,13 +67,14 @@ package com.acrontum.dtos;
     {%- endfor %}
      */
     @{{ ucFirst(method) }}Mapping("{{ springPath }}")
-    public {{ 'com.acrontum.template.dtos.' if javaReturn !== 'void' }}{{ javaReturn }}{{ 'Dto' if javaReturn !== 'void' }} {{ javaMethodName }}({{ javaParametersDefinition(input, path) }}
+    public ResponseEntity<{{ 'com.acrontum.template.dtos.' if javaReturn !== 'void' }}{{ javaReturn }}{{ 'Dto' if javaReturn !== 'void' }}> {{ javaMethodName }}({{ javaParametersDefinition(input, path) }}
     ) {
         {% if javaReturn !== 'void' -%}{{ modelName }} {{ camel_case_operation }}Model = {% endif -%}this.{{ camel_case_operation }}Service.{{ javaMethodName }}({{ javaParametersCall(input) }});
         {% if javaReturn !== 'void' -%}
         return this.{{ camel_case_operation }}Mapper.to{{ javaReturn }}Dto({{ camel_case_operation }}Model);
         {%- endif %}
-        return this.restTemplate.exchange({{ "springPath" }}, HttpMethod.{{ ucFirst(method) }}, , {{ 'com.acrontum.template.dtos.' if javaReturn !== 'void' }}{{ javaReturn }}{{ 'Dto' if javaReturn !== 'void' }}.class);
+        val response = this.restTemplate.exchange("{{ springPath }}, HttpMethod.{{ ucFirst(method) }}, , {{ 'com.acrontum.template.dtos.' if javaReturn !== 'void' }}{{ javaReturn }}{{ 'Dto' if javaReturn !== 'void' }}.class);
+
     }
 {%- endmacro -%}
 
