@@ -6,7 +6,7 @@ public class {{ucFirst(operation_name)}}Service {
     {% for method, path in op.path -%}
         {% if isValidMethod(method)%}
 
-        public {{ path.operationId }} ({{ pathParamsToDomainParams(method, path, true) }} {
+        public {{ path.operationId }} ({{ pathParamsToDomainParams(method, path, true) }}Dto){
 
         }
 
