@@ -1,22 +1,7 @@
 {%-set camel_case_operation = _.camelCase(_.deburr(operation_name)).replace(' ','')-%}
 {%-set pascal_case_operation = ucFirst(camel_case_operation)-%}
-package com.acrontum.template.controllers;
-
-import com.acrontum.spring.lib.AcrontumComponent;
-import com.acrontum.template.mappers.{{ pascal_case_operation }}Mapper;
-import com.acrontum.template.models.{{ pascal_case_operation }};
-import com.acrontum.template.services.{{ pascal_case_operation }}Service;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+package com.acrontum.clients;
+package com.acrontum.dtos;
 
 {#
     Formats the text into camel case.
@@ -96,8 +81,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Component
 @RequiredArgsConstructor
 public class {{ pascal_case_operation }}Client extends AcrontumHttpClient {
-    private final {{ pascal_case_operation }}Service {{ camel_case_operation }}Service;
-    private final {{ pascal_case_operation }}Mapper {{ camel_case_operation }}Mapper;
 
 {%- for op in operations -%}
     {%- for method, path in op.path -%}
