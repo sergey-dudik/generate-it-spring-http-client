@@ -72,7 +72,7 @@ package com.acrontum.dtos;
         {% if javaReturn !== 'void' -%}
         return this.{{ camel_case_operation }}Mapper.to{{ javaReturn }}Dto({{ camel_case_operation }}Model);
         {%- endif %}
-        return this.restTemplate.{{ ucFirst(method) }}ForObject({{ springPath }}, {{ 'com.acrontum.template.dtos.' if javaReturn !== 'void' }}{{ javaReturn }}{{ 'Dto' if javaReturn !== 'void' }});
+        return this.restTemplate.exchange({{ "springPath" }}, HttpMethod.{{ ucFirst(method) }}, , {{ 'com.acrontum.template.dtos.' if javaReturn !== 'void' }}{{ javaReturn }}{{ 'Dto' if javaReturn !== 'void' }}.class);
     }
 {%- endmacro -%}
 
